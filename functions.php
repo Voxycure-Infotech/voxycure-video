@@ -14,6 +14,7 @@ require VOXY_PATH . '/inc/menu.php'; // Setup menu
 require VOXY_PATH . '/inc/widget.php'; // Widgets 
 require VOXY_PATH . '/inc/cpt.php'; // Setup CPT 
 require VOXY_PATH . '/inc/metabox.php'; // Registed custom metaboxes 
+require VOXY_PATH . '/inc/video-stream.php'; // Video streaming functions 
 require VOXY_PATH . '/inc/shortcode.php'; // All shortcode 
 
 function add_theme_css_and_js()

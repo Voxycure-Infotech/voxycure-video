@@ -12,7 +12,6 @@ get_header();
 
 
 $post_id = get_the_ID();
-$video_url = get_post_meta($post_id, 'video_url', true);
 $thumbnail_url = get_the_post_thumbnail_url($post_id);
 
 ?>
@@ -27,7 +26,7 @@ $thumbnail_url = get_the_post_thumbnail_url($post_id);
             <div class="voxy-content">
                 <div class="single-video-container">
                     <video id="player" controls playsinline poster="<?php echo esc_attr($thumbnail_url); ?>">
-                        <source src="<?php echo esc_attr($video_url); ?>" type="video/mp4">
+                        <source src="<?php echo get_site_url() . '/video-stream/' . esc_attr($post_id); ?>" type="video/mp4">
                     </video>
                 </div>
                 <?php echo do_shortcode('[post_list type="video" title="More Videos"]'); ?>
