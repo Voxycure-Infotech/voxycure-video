@@ -16,6 +16,13 @@ if (!class_exists('VOXY_CPT')) {
         {
             add_action('init', [$this, 'register_cpt']);
             add_action('init', [$this, 'register_taxonomy']);
+
+            add_action('admin_enqueue_scripts', [$this, 'admin_enqueue_scripts']);
+            add_action('video_category_add_form_fields', [$this, 'rudr_add_term_fields']);
+            add_action('video_category_edit_form_fields', [$this, 'rudr_edit_term_fields'], 10, 2);
+
+            add_action('created_video_category', [$this, 'video_category_term_fields']);
+            add_action('edited_video_category', [$this, 'video_category_term_fields']);
         }
 
         /**
@@ -82,7 +89,49 @@ if (!class_exists('VOXY_CPT')) {
 
             register_taxonomy('video_category', 'video', $args);
         }
-    }
 
+        public function admin_enqueue_scripts()
+        {
+            wp_enqueue_media();
+
+            wp_enqueue_script('wp-media', VOXY_URL . '/assets/js/wp-media.js', array('jquery'), null, true);
+            // Localize the script with data
+            wp_localize_script('wp-media', 'taxonomy_image_upload', array(
+                'title' => __('Choose or Upload an Image', 'voxy-video'),
+                'button' => __('Use this Image', 'voxy-video'),
+            ));
+        }
+
+        public  function rudr_add_term_fields()
+        {
+            include VOXY_PATH . '/templates/admin/term-fields.php'; // Admin custom fields
+        }
+
+        public function rudr_edit_term_fields($term, $taxonomy)
+        {
+            // get meta data value
+            $thumbnail = get_term_meta($term->term_id, 'thumbnail', true);
+            $is_edit = true;
+
+            echo '<tr class="form-field">';
+            echo '<th><label for="rudr_img">Image Field</label></th>';
+
+            echo '<td>';
+            include VOXY_PATH . '/templates/admin/term-fields.php'; // Admin custom fields
+            echo '</td>';
+
+            echo '</tr>';
+        }
+
+
+        public function video_category_term_fields($term_id)
+        {
+            update_term_meta(
+                $term_id,
+                'thumbnail',
+                sanitize_text_field($_POST['thumbnail'])
+            );
+        }
+    }
     new VOXY_CPT();
 }

@@ -2,10 +2,15 @@ jQuery(document).ready(function ($) {
 
     // Load video player
     if ($('#player').length > 0) {
-        const player = new Plyr('#player');
+        const player = new Plyr('#player', {
+            controls: ['play-large', 'play', 'progress', 'current-time', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'],
+            seekTime: 10, // Set the seek time for skip/rewind (in seconds)
+            touch: true, // Enable touch controls
+            tooltips: { controls: false, seek: true }
+        });
     }
 
-
+    // Header 
     const menuBtn = document.querySelector(".menu-icon span");
     const searchBtn = document.querySelector(".search-icon");
     const cancelBtn = document.querySelector(".cancel-icon");
